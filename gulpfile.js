@@ -1,6 +1,14 @@
-var 	gulp = require('gulp'),
-	gutil = require('gulp-util');
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
 
-gulp.task('default', function() {
-	return gutil.log('Gulp is running');
+gulp.task('default',['watch']);
+
+gulp.task('jshint', function() {
+	return gulp.src('source/javascript/**/*.js')
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('watch', function() {
+	gulp.watch('source/javascript/**/*.js',['jshint']);
 });
