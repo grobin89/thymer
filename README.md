@@ -11,11 +11,13 @@
 3. House keeping Features
   1. Edit job number and description fields
   2. Delete job timer
+
 ### Phase 2 - Historical Time Segments Feature
 1. Create time segment for each play
 2. Delete time segment
 3. Exclude existing time segments
 4. Create synthetic time segments
+
 ### Phase 3 - Organisational Features
 1. Categorize job timers
   1. Open jobs
