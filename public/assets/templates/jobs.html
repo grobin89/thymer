@@ -1,0 +1,225 @@
+
+      <!-- jobs view -->
+      <div class="well">
+        <form class="form-inline text-right">
+          <div class="form-group">
+            <label class="sr-only" for="job_number">Job Number</label>
+            <input type="email" class="form-control" id="job_number" placeholder="Job Number">
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="alias"></label>
+            <input type="password" class="form-control" id="alias" placeholder="Alias">
+          </div>
+          <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-play"></i></button>
+          <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i></button>
+        </form>
+      </div>
+
+      <ul class="nav nav-pills nav-justified">
+        <li role="presentation" class="active"><a href="#">Open</a></li>
+        <li role="presentation"><a href="#">Closed</a></li>
+      </ul>
+
+      <div class="panel-group" id="accordion">
+
+
+        <!-- open job list -->
+        <div class="panel panel-default" ng-repeat="job in jobCtrl.jobs">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-6 col-xs-6">
+                  <a href="#"><i class="glyphicon glyphicon-copy"></i></a>
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{{jobCtrl.getTitle(job)}}</a>
+              </div>
+              <div class="col-md-6 col-xs-6 text-right">
+                <span class="label label-default label-timer">{{job.time}}</span>
+                <button type="button" name="copy" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-copy"></i></button>
+                <button type="button" name="play" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-play"></i></button>
+                <button type="button" name="pause" class="btn btn-default btn-sm hidden"><i class="glyphicon glyphicon-pause"></i></button>
+                <button type="button" name="reset" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i></button>
+              </div>
+            </div>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <!-- start time segs -->
+
+              <table class="table">
+                <tr>
+                  <th>Date</th>
+                  <th>Time elapsed</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Jan 26th 8:45</td>
+                  <td>45.20</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 9:15</td>
+                  <td>120.00</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 12:42</td>
+                  <td>12.29</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 15:05</td>
+                  <td>67.23</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-copy"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <!-- end time segs -->
+            </div>
+          </div>
+        </div>
+        <!-- end open job list -->
+
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-6 col-xs-6">
+                  <a href="#"><i class="glyphicon glyphicon-copy"></i></a>
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">323450</a>
+              </div>
+              <div class="col-md-6 col-xs-6 text-right">
+                <span class="label label-default label-timer">0.00</span>
+                <button type="button" name="copy" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-duplicate"></i></button>
+                <button type="button" name="play" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-play"></i></button>
+                <button type="button" name="pause" class="btn btn-default btn-sm hidden"><i class="glyphicon glyphicon-pause"></i></button>
+                <button type="button" name="reset" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i></button>
+              </div>
+            </div>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+              <!-- start time segs -->
+
+              <table class="table">
+                <tr>
+                  <th>Date</th>
+                  <th>Time elapsed</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Jan 26th 8:45</td>
+                  <td>45.20</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 9:15</td>
+                  <td>120.00</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 12:42</td>
+                  <td>12.29</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 15:05</td>
+                  <td>67.23</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <!-- end time segs -->
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-6 col-xs-6">
+                  <a href="#"><i class="glyphicon glyphicon-copy"></i></a>
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">543456</a>
+              </div>
+              <div class="col-md-6 col-xs-6 text-right">
+                <span class="label label-default label-timer">0.00</span>
+                <button type="button" name="copy" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-duplicate"></i></button>
+                <button type="button" name="play" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-play"></i></button>
+                <button type="button" name="pause" class="btn btn-default btn-sm hidden"><i class="glyphicon glyphicon-pause"></i></button>
+                <button type="button" name="reset" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i></button>
+              </div>
+            </div>
+          </div>
+          <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+              <!-- start time segs -->
+
+              <table class="table">
+                <tr>
+                  <th>Date</th>
+                  <th>Time elapsed</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Jan 26th 8:45</td>
+                  <td>45.20</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 9:15</td>
+                  <td>120.00</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 12:42</td>
+                  <td>12.29</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jan 26th 15:05</td>
+                  <td>67.23</td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <!-- end time segs -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end jobs view  -->
