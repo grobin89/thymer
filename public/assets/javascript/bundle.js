@@ -35620,11 +35620,65 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
   $stateProvider.state('jobs', {
     url: '/jobs',
     templateUrl: 'assets/templates/jobs.html',
-    controller: function controller() {
+    controller: function controller($interval) {
+      var ctrl = this;
+
       this.job = {};
       this.jobs = data;
 
-      this.create = function () {};
+      this.running = {};
+      this.promise = {};
+
+      this.create = function () {
+        this.job.time = 0;
+        this.jobs.unshift(this.job);
+        this.job = {};
+      };
+
+      this.play = function (job) {
+        if (this.running) {
+          $interval.cancel(this.promise);
+        }
+        this.running = job;
+        this.promise = $interval(function () {
+          ctrl.running.time += 1000;
+        }, 1000);
+      };
+
+      this.autoplay = function () {
+        this.create();
+        this.play(this.jobs[0]);
+      };
+
+      this.pause = function (job) {
+        $interval.cancel(this.promise);
+        this.running = {};
+      };
+
+      this.reset = function (job) {
+        job.time = 0;
+      };
+
+      this.remove = function (job) {};
+
+      this.isRunning = function (job) {
+        if (job === this.running) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      this.hasSegs = function (job) {
+        if (!job.time_segs) {
+          return false;
+        }
+        if (job.time_segs.length == 0) {
+          return false;
+        } else {
+          return false;
+        }
+      };
 
       this.getTitle = function (job) {
         if (job.alias) {
