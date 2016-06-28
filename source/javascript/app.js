@@ -68,6 +68,15 @@ angular.module('thymer',['ui.router'])
             return job.job_number;
           }
         };
+
+        this.getSeconds = function(job){
+          return Math.ceil(job.time) / 1000;
+        };
+
+        this.getMinutes = function(job){
+          return Math.floor(this.getSeconds(job) / 60);
+        };
+
       },
       controllerAs: 'jobCtrl',
     });

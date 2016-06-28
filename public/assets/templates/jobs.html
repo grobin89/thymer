@@ -29,21 +29,22 @@
             <div class="row">
               <div class="col-md-6 col-xs-6">
                   <!-- <a href="#"><i class="glyphicon glyphicon-copy"></i></a> -->
+                  <button type="button" name="pinned" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-pushpin"></i></button>
+                  <button type="button" name="copy" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-copy"></i></button>
                   <a data-toggle="collapse" data-parent="#accordion" ng-href="#{{job.job_number}}">{{jobCtrl.getTitle(job)}}</a>
               </div>
               <div class="col-md-6 col-xs-6 text-right">
-                <span class="label label-default label-timer">{{job.time}}</span>
-                <button type="button" name="copy" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-copy"></i></button>
+                <span class="label label-default label-timer">{{jobCtrl.getMinutes(job)}}.{{jobCtrl.getSeconds(job)}}</span>
                 <button type="button" name="play" class="btn btn-default btn-sm" ng-hide="jobCtrl.isRunning(job)" ng-click="jobCtrl.play(job)"><i class="glyphicon glyphicon-play"></i></button>
                 <button type="button" name="pause" class="btn btn-default btn-sm" ng-show="jobCtrl.isRunning(job)" ng-click="jobCtrl.pause(job)"><i class="glyphicon glyphicon-pause"></i></button>
                 <button type="button" name="reset" class="btn btn-default btn-sm" ng-click="jobCtrl.reset(job)"><i class="glyphicon glyphicon-repeat"></i></button>
-                <button type="button" name="edit" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-edit"></i></button>
-                <button type="button" name="remove" class="btn btn-default btn-sm" ng-click="jobCtrl.remove(job)"><i class="glyphicon glyphicon-remove"></i></button>
               </div>
             </div>
           </div>
           <div id="{{job.job_number}}" class="panel-collapse collapse">
             <div class="panel-body">
+                <button type="button" name="edit" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-edit"></i></button>
+                <button type="button" name="remove" class="btn btn-default btn-sm" ng-click="jobCtrl.remove(job)"><i class="glyphicon glyphicon-remove"></i></button>
 
 
 
