@@ -34,7 +34,7 @@
                   <a data-toggle="collapse" data-parent="#accordion" ng-href="#{{job.job_number}}">{{jobCtrl.getTitle(job)}}</a>
               </div>
               <div class="col-md-6 col-xs-6 text-right">
-                <span class="label label-default label-timer">{{jobCtrl.getMinutes(job)}}.{{jobCtrl.getSeconds(job)}}</span>
+                <span class="label label-default label-timer">{{jobCtrl.getMinutes(job)}}.{{job.time | date: 'ss'}}</span>
                 <button type="button" name="play" class="btn btn-default btn-sm" ng-hide="jobCtrl.isRunning(job)" ng-click="jobCtrl.play(job)"><i class="glyphicon glyphicon-play"></i></button>
                 <button type="button" name="pause" class="btn btn-default btn-sm" ng-show="jobCtrl.isRunning(job)" ng-click="jobCtrl.pause(job)"><i class="glyphicon glyphicon-pause"></i></button>
                 <button type="button" name="reset" class="btn btn-default btn-sm" ng-click="jobCtrl.reset(job)"><i class="glyphicon glyphicon-repeat"></i></button>
@@ -43,13 +43,49 @@
           </div>
           <div id="{{job.job_number}}" class="panel-collapse collapse">
             <div class="panel-body">
-                <button type="button" name="edit" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-edit"></i></button>
-                <button type="button" name="remove" class="btn btn-default btn-sm" ng-click="jobCtrl.remove(job)"><i class="glyphicon glyphicon-remove"></i></button>
+
+              <!-- timer nav -->
+              <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                  <ul class="nav navbar-nav">
+                    <li><a class="active" href="#">Today</a></li>
+                    <li><a href="#">Older</a></li>
+                  </ul>
+                  <form class="navbar-form navbar-right" action="index.html" method="post">
+                    <div class="form-group">
+                      <button type="button" name="edit" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-edit"></i></button>
+                      <button type="button" name="remove" class="btn btn-default btn-sm" ng-click="jobCtrl.remove(job)"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                  </form>
+                </div>
+              </nav>
+              <!-- / timer nav -->
+
+              <div class="container-fluid">
+
+                <!-- edit form -->
+                <div class="row">
+                  <div class="col-md-12 well">
+                    <form class="">
+                      <div class="form-group">
+                        <label for="edit_job_number">Job number</label>
+                        <input class="form-control" type="text" name="edit_job_number" value="">
+                      </div>
+                      <div class="form-group">
+                        <label for="edit_alias">Alias</label>
+                        <input class="form-control" type="text" name="edit_text" value="">
+                      </div>
+                      <div class="form-group text-right">
+                        <input class="btn btn-default" type="submit" name="edit_submit" value="Save">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- / edit form -->
 
 
-
-              <!-- start time segs -->
-              <div class="row">
+                <!-- time segs -->
+                <div class="row">
                   <table class="table" ng-show="jobCtrl.hasSegs(job)">
                     <tr>
                       <th>Date</th>
@@ -66,12 +102,20 @@
                       </td>
                     </tr>
                   </table>
-                  <div class="col-md-offset-1 col-md-10">
+                  <div class="col-md-12">
                     <div class="alert alert-info" role="alert" ng-hide="jobCtrl.hasSegs(job)">There is no history.</div>
                   </div>
                 </div>
+                <!-- / time segs -->
+
               </div>
-              <!-- end time segs -->
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
