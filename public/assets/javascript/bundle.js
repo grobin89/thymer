@@ -35614,6 +35614,12 @@ require('angular-ui-router');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var SINGLE_ELEMENT = 1;
+var SECOND_IN_MILLISECONDS = 1000;
+var MINUTES_IN_SECONDS = 60;
+var EMPTY = 0;
+var START_TIME = 0;
+
 _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/jobs');
 
@@ -35623,26 +35629,40 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
     controller: function controller($interval) {
       var ctrl = this;
 
-      this.job = {};
       this.jobs = data;
 
-      this.running = {};
-      this.promise = {};
+      // cursors
+      this.job = {}; // place holder for a new job
+      this.running = {}; // current running job
+      this.jobPromise = {}; // place holder for job $interval promise
+      this.timeSegPromise = {}; // place holder for time seg $interval promise
+      this.activeTimeSeg = {}; // current active time seg
+      this.history = 0; //place holder for time
 
+      /**
+      * creates a new job object and places it at the start of jobs
+      *
+      */
       this.create = function () {
-        this.job.time = 0;
+        this.job.time = START_TIME;
         this.jobs.unshift(this.job);
         this.job = {};
       };
 
+      /**
+       *
+       *
+       */
       this.play = function (job) {
         if (this.running) {
-          $interval.cancel(this.promise);
+          this.pause(this.running);
         }
         this.running = job;
-        this.promise = $interval(function () {
-          ctrl.running.time += 1000;
-        }, 1000);
+        this.history = this.running.time;
+        this.startTimeSeg();
+        this.jobPromise = $interval(function () {
+          ctrl.running.time = ctrl.history + ctrl.measureTimeSeg();
+        }, SECOND_IN_MILLISECONDS);
       };
 
       this.autoplay = function () {
@@ -35651,15 +35671,20 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
       };
 
       this.pause = function (job) {
-        $interval.cancel(this.promise);
+        $interval.cancel(this.jobPromise);
+        this.finishTimeSeg();
         this.running = {};
+        this.history = 0;
       };
 
       this.reset = function (job) {
-        job.time = 0;
+        job.time = START_TIME;
       };
 
-      this.remove = function (job) {};
+      this.remove = function (job) {
+        var pos = this.jobs.indexOf(job);
+        this.jobs.splice(pos, SINGLE_ELEMENT);
+      };
 
       this.isRunning = function (job) {
         if (job === this.running) {
@@ -35673,10 +35698,10 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
         if (!job.time_segs) {
           return false;
         }
-        if (job.time_segs.length == 0) {
+        if (job.time_segs.length == EMPTY) {
           return false;
         } else {
-          return false;
+          return true;
         }
       };
 
@@ -35689,11 +35714,39 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
       };
 
       this.getSeconds = function (job) {
-        return Math.ceil(job.time) / 1000;
+        return Math.ceil(job.time) / SECOND_IN_MILLISECONDS;
       };
 
       this.getMinutes = function (job) {
-        return Math.floor(this.getSeconds(job) / 60);
+        return Math.floor(this.getSeconds(job) / MINUTES_IN_SECONDS);
+      };
+
+      var _newTimeSeg = function _newTimeSeg() {
+        var now = Date.now();
+        return { finish: now, start: now, use: true };
+      };
+
+      this.startTimeSeg = function () {
+        if (!this.hasSegs(this.running)) {
+          this.running.time_segs = [];
+        }
+
+        this.activeTimeSeg = _newTimeSeg();
+        this.running.time_segs.unshift(this.activeTimeSeg);
+      };
+
+      this.finishTimeSeg = function () {
+        this.activeTimeSeg.finish = Date.now();
+        this.activeTimeSeg = {};
+      };
+
+      this.measureTimeSeg = function () {
+        if (this.activeTimeSeg) {
+          return Date.now() - this.activeTimeSeg.start;
+        } else {
+          console.log("no time being logged");
+          return EMPTY;
+        }
       };
     },
     controllerAs: 'jobCtrl'

@@ -69,14 +69,11 @@
                     <form class="">
                       <div class="form-group">
                         <label for="edit_job_number">Job number</label>
-                        <input class="form-control" type="text" name="edit_job_number" value="">
+                        <input class="form-control" type="text" name="edit_job_number" ng-value="job.job_number" ng-model="job.job_number">
                       </div>
                       <div class="form-group">
                         <label for="edit_alias">Alias</label>
-                        <input class="form-control" type="text" name="edit_text" value="">
-                      </div>
-                      <div class="form-group text-right">
-                        <input class="btn btn-default" type="submit" name="edit_submit" value="Save">
+                        <input class="form-control" type="text" name="edit_alias" ng-value="job.alias" ng-model="job.alias">
                       </div>
                     </form>
                   </div>
@@ -92,7 +89,7 @@
                       <th>Time elapsed</th>
                       <th></th>
                     </tr>
-                    <tr ng-repeat="time_seg in jobCtrl.job.time_segs">
+                    <tr ng-repeat="time_seg in job.time_segs">
                       <td>{{time_seg.start | date }}</td>
                       <td>{{time_seg.finish - time_seg.start}}</td>
                       <td class="text-right">
