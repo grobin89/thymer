@@ -1,18 +1,21 @@
 
       <!-- jobs view -->
-      <div class="well">
-        <form class="form-inline text-right">
-          <div class="form-group">
-            <label class="sr-only" for="job_number">Job Number</label>
-            <input type="text" ng-model="jobCtrl.job.job_number" class="form-control" id="job_number" placeholder="Job Number">
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="alias"></label>
-            <input type="text" ng-model="jobCtrl.job.alias" class="form-control" id="alias" placeholder="Alias">
-          </div>
-          <button type="submit" class="btn btn-default" ng-click="jobCtrl.autoplay()"><i class="glyphicon glyphicon-play"></i></button>
-          <button type="button" class="btn btn-default" ng-click="jobCtrl.create()"><i class="glyphicon glyphicon-plus"></i></button>
-        </form>
+      <div class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <label class="sr-only" for="job_number">Job Number</label>
+              <input type="text" ng-model="jobCtrl.job.job_number" class="form-control" id="job_number" placeholder="Job Number">
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="alias"></label>
+              <input type="text" ng-model="jobCtrl.job.alias" class="form-control" id="alias" placeholder="Alias">
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="jobCtrl.autoplay()"><i class="glyphicon glyphicon-play"></i></button>
+            <button type="button" class="btn btn-default" ng-click="jobCtrl.create()"><i class="glyphicon glyphicon-plus"></i></button>
+          </form>
+        </div>
+
       </div>
 
       <!-- <ul class="nav nav-pills nav-justified">
@@ -20,7 +23,7 @@
         <li role="presentation"><a href="#">Closed</a></li>
       </ul> -->
 
-      <div class="panel-group" id="accordion">
+      <div class="panel-group container-fluid" id="accordion">
 
 
         <!-- open job list -->
@@ -34,7 +37,7 @@
                   <a data-toggle="collapse" data-parent="#accordion" ng-href="#{{job.job_number}}">{{jobCtrl.getTitle(job)}}</a>
               </div>
               <div class="col-md-6 col-xs-6 text-right">
-                <span class="label label-default label-timer">{{jobCtrl.getMinutes(job)}}.{{job.time | date: 'ss'}}</span>
+                <span class="label label-default label-timer">{{jobCtrl.formatTime(job.time)}}</span>
                 <button type="button" name="play" class="btn btn-default btn-sm" ng-hide="jobCtrl.isRunning(job)" ng-click="jobCtrl.play(job)"><i class="glyphicon glyphicon-play"></i></button>
                 <button type="button" name="pause" class="btn btn-default btn-sm" ng-show="jobCtrl.isRunning(job)" ng-click="jobCtrl.pause(job)"><i class="glyphicon glyphicon-pause"></i></button>
                 <button type="button" name="reset" class="btn btn-default btn-sm" ng-click="jobCtrl.reset(job)"><i class="glyphicon glyphicon-repeat"></i></button>
@@ -90,11 +93,14 @@
                       <th></th>
                     </tr>
                     <tr ng-repeat="time_seg in job.time_segs">
-                      <td>{{time_seg.start | date }}</td>
-                      <td>{{time_seg.finish - time_seg.start}}</td>
+                      <td>{{time_seg.start | date:'medium' }}</td>
+                      <td>{{jobCtrl.formatTime(time_seg.finish - time_seg.start)}}</td>
                       <td class="text-right">
-                        <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-unchecked"></i></button>
-                        <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-trash"></i></button>
+                        <button type="button" class="btn btn-default btn-sm" name="button" ng-click="jobCtrl.toggleTimeSegUse(time_seg)">
+                          <i  ng-hide="time_seg.use" class="glyphicon glyphicon-unchecked"></i>
+                          <i ng-show="time_seg.use" class="glyphicon glyphicon-check"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm" name="button" ng-click="jobCtrl.removeTimeSeg(job,time_seg)"><i class="glyphicon glyphicon-trash"></i></button>
                         <button type="button" class="btn btn-default btn-sm" name="button"><i class="glyphicon glyphicon-copy"></i></button>
                       </td>
                     </tr>

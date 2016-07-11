@@ -51,7 +51,10 @@ angular.module('thymer',['ui.router'])
           this.running = job;
           this.history = this.running.time;
           this.startTimeSeg();
-          this.jobPromise = $interval(function(){ ctrl.running.time = ctrl.history + ctrl.measureTimeSeg() },SECOND_IN_MILLISECONDS);
+          this.jobPromise = $interval(function(){
+            ctrl.running.time = ctrl.history + ctrl.measureTimeSeg();
+            ctrl.activeTimeSeg.finish = Date.now();
+          },SECOND_IN_MILLISECONDS);
         };
 
         this.autoplay = function(){
@@ -95,12 +98,19 @@ angular.module('thymer',['ui.router'])
           }
         };
 
-        this.getSeconds = function(job){
-          return Math.ceil(job.time) / SECOND_IN_MILLISECONDS;
+        let _getSeconds = function(time){
+          return Math.ceil((time / SECOND_IN_MILLISECONDS));
         };
 
-        this.getMinutes = function(job){
-          return Math.floor(this.getSeconds(job) / MINUTES_IN_SECONDS);
+        let _getMinutes = function(time){
+          return Math.floor(_getSeconds(time) / MINUTES_IN_SECONDS);
+        };
+
+        this.formatTime = function(time){
+          let seconds = _getSeconds(time)%60;
+          if(seconds < 10){ seconds = `0${seconds}`; }
+          let minutes = _getMinutes(time);
+          return `${minutes}.${seconds}`;
         };
 
         let _newTimeSeg = function(){
@@ -130,6 +140,16 @@ angular.module('thymer',['ui.router'])
           }
         }
 
+        this.toggleTimeSegUse = function(job,time_seg){
+          if(time_seg.use){ time_seg.use = false; }
+          else { time_seg.use = true; }
+        }
+
+        this.removeTimeSeg = function(job,time_seg){
+          let pos = job.time_segs.indexOf(time_seg);
+          job.time_segs.splice(pos,SINGLE_ELEMENT);
+        }
+
 
 
 
@@ -148,32 +168,32 @@ angular.module('thymer',['ui.router'])
 
 
 var data = [
-  {
-    job_number: 123456,
-    alias: 'Team Meeting',
-    time_segs: [
-      {
-        start: 0,
-        finish: 0,
-        use: true,
-      }
-    ],
-    time: 0,
-    open: true,
-    pinned: false,
-  },
-  {
-    job_number: 123432,
-    //alias: 'Team Meeting',
-    time_segs: [
-      {
-        start: 0,
-        finish: 0,
-        use: true,
-      }
-    ],
-    time: 0,
-    open: true,
-    pinned: false,
-  },
+  // {
+  //   job_number: 123456,
+  //   alias: 'Team Meeting',
+  //   time_segs: [
+  //     {
+  //       start: 0,
+  //       finish: 0,
+  //       use: true,
+  //     }
+  //   ],
+  //   time: 0,
+  //   open: true,
+  //   pinned: false,
+  // },
+  // {
+  //   job_number: 123432,
+  //   //alias: 'Team Meeting',
+  //   time_segs: [
+  //     {
+  //       start: 0,
+  //       finish: 0,
+  //       use: true,
+  //     }
+  //   ],
+  //   time: 0,
+  //   open: true,
+  //   pinned: false,
+  // },
 ];
