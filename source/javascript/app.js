@@ -49,11 +49,11 @@ angular.module('thymer',['ui.router'])
             this.pause(this.running);
           }
           this.running = job;
-          this.history = this.running.time;
+          this.history = _calcHistory(this.running);
           this.startTimeSeg();
           this.jobPromise = $interval(function(){
-            ctrl.running.time = ctrl.history + ctrl.measureTimeSeg();
             ctrl.activeTimeSeg.finish = Date.now();
+            ctrl.running.time = ctrl.history + ctrl.measureTimeSeg(ctrl.activeTimeSeg);
           },SECOND_IN_MILLISECONDS);
         };
 
@@ -65,6 +65,7 @@ angular.module('thymer',['ui.router'])
         this.pause = function(job){
           $interval.cancel(this.jobPromise);
           this.finishTimeSeg();
+          _adjustTime(this.running);
           this.running = {};
           this.history = 0;
         };
@@ -99,7 +100,7 @@ angular.module('thymer',['ui.router'])
         };
 
         let _getSeconds = function(time){
-          return Math.ceil((time / SECOND_IN_MILLISECONDS));
+          return Math.floor((time / SECOND_IN_MILLISECONDS));
         };
 
         let _getMinutes = function(time){
@@ -130,25 +131,36 @@ angular.module('thymer',['ui.router'])
           this.activeTimeSeg = {};
         };
 
-        this.measureTimeSeg = function(){
-          if(this.activeTimeSeg){
-            return Date.now() - this.activeTimeSeg.start;
-          }
-          else {
-            console.log("no time being logged");
-            return EMPTY;
-          }
-        }
+        this.measureTimeSeg = function(time_seg){
+          return time_seg.finish - time_seg.start;
+        };
 
         this.toggleTimeSegUse = function(job,time_seg){
           if(time_seg.use){ time_seg.use = false; }
           else { time_seg.use = true; }
-        }
+          _adjustTime(job);
+        };
 
         this.removeTimeSeg = function(job,time_seg){
           let pos = job.time_segs.indexOf(time_seg);
           job.time_segs.splice(pos,SINGLE_ELEMENT);
-        }
+          job.time = _calcHistory(job);
+        };
+
+        let _calcHistory = function(job){
+          let result = 0;
+          if(job.time_segs){
+            for(let i = 0 ; i < job.time_segs.length ; i++ ){
+              let time_seg = job.time_segs[i];
+              if(time_seg.use){ result += time_seg.finish - time_seg.start; }
+            }
+          }
+          return result;
+        };
+
+        let _adjustTime = function(job){
+          job.time = _calcHistory(job);
+        };
 
 
 

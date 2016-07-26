@@ -35658,11 +35658,11 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
           this.pause(this.running);
         }
         this.running = job;
-        this.history = this.running.time;
+        this.history = _calcHistory(this.running);
         this.startTimeSeg();
         this.jobPromise = $interval(function () {
-          ctrl.running.time = ctrl.history + ctrl.measureTimeSeg();
           ctrl.activeTimeSeg.finish = Date.now();
+          ctrl.running.time = ctrl.history + ctrl.measureTimeSeg(ctrl.activeTimeSeg);
         }, SECOND_IN_MILLISECONDS);
       };
 
@@ -35674,6 +35674,7 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
       this.pause = function (job) {
         $interval.cancel(this.jobPromise);
         this.finishTimeSeg();
+        _adjustTime(this.running);
         this.running = {};
         this.history = 0;
       };
@@ -35715,7 +35716,7 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
       };
 
       var _getSeconds = function _getSeconds(time) {
-        return Math.ceil(time / SECOND_IN_MILLISECONDS);
+        return Math.floor(time / SECOND_IN_MILLISECONDS);
       };
 
       var _getMinutes = function _getMinutes(time) {
@@ -35750,13 +35751,8 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
         this.activeTimeSeg = {};
       };
 
-      this.measureTimeSeg = function () {
-        if (this.activeTimeSeg) {
-          return Date.now() - this.activeTimeSeg.start;
-        } else {
-          console.log("no time being logged");
-          return EMPTY;
-        }
+      this.measureTimeSeg = function (time_seg) {
+        return time_seg.finish - time_seg.start;
       };
 
       this.toggleTimeSegUse = function (job, time_seg) {
@@ -35765,11 +35761,30 @@ _angular2.default.module('thymer', ['ui.router']).config(function ($stateProvide
         } else {
           time_seg.use = true;
         }
+        _adjustTime(job);
       };
 
       this.removeTimeSeg = function (job, time_seg) {
         var pos = job.time_segs.indexOf(time_seg);
         job.time_segs.splice(pos, SINGLE_ELEMENT);
+        job.time = _calcHistory(job);
+      };
+
+      var _calcHistory = function _calcHistory(job) {
+        var result = 0;
+        if (job.time_segs) {
+          for (var i = 0; i < job.time_segs.length; i++) {
+            var time_seg = job.time_segs[i];
+            if (time_seg.use) {
+              result += time_seg.finish - time_seg.start;
+            }
+          }
+        }
+        return result;
+      };
+
+      var _adjustTime = function _adjustTime(job) {
+        job.time = _calcHistory(job);
       };
     },
     controllerAs: 'jobCtrl'
