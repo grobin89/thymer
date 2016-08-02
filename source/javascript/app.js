@@ -71,7 +71,14 @@ angular.module('thymer',['ui.router'])
         };
 
         this.reset = function(job){
+          for(let i = 0 ; i < job.time_segs.length ; i++ ){
+            job.time_segs[i].use = false;
+          }
           job.time = START_TIME;
+          if(this.running == job){
+            this.pause(job);
+            this.play(job);
+          }
         };
 
         this.remove = function(job){
