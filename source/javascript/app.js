@@ -29,6 +29,7 @@ angular.module('thymer',['ui.router'])
         this.timeSegPromise = {}; // place holder for time seg $interval promise
         this.activeTimeSeg = {}; // current active time seg
         this.history = 0; //place holder for time
+        this.dummyId = 0; //if no job number is provided
 
         /**
         * creates a new job object and places it at the start of jobs
@@ -36,6 +37,10 @@ angular.module('thymer',['ui.router'])
         */
         this.create = function(){
           this.job.time = START_TIME;
+          if(!this.job.job_number) {
+            this.dummyId += 1;
+            this.job.job_number = this.dummyId;
+          }
           this.jobs.unshift(this.job);
           this.job = {};
         };
